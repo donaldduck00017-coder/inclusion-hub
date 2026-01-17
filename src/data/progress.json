@@ -1,0 +1,58 @@
+{
+  "user-001": {
+    "userId": "user-001",
+    "totalChallenges": 10,
+    "completedChallenges": 3,
+    "totalPoints": 475,
+    "currentStreak": 5,
+    "longestStreak": 12,
+    "averageScore": 87,
+    "skills": [
+      { "area": "threat-detection", "level": 65, "challengesCompleted": 2, "totalChallenges": 4 },
+      { "area": "incident-response", "level": 45, "challengesCompleted": 1, "totalChallenges": 3 },
+      { "area": "security-analysis", "level": 55, "challengesCompleted": 2, "totalChallenges": 4 },
+      { "area": "risk-assessment", "level": 30, "challengesCompleted": 0, "totalChallenges": 2 },
+      { "area": "compliance", "level": 40, "challengesCompleted": 1, "totalChallenges": 2 },
+      { "area": "network-defense", "level": 50, "challengesCompleted": 1, "totalChallenges": 3 }
+    ],
+    "recentActivity": [
+      {
+        "id": "act-001",
+        "type": "challenge_completed",
+        "challengeId": "ch-001",
+        "challengeTitle": "Phishing Email Analysis",
+        "timestamp": "2025-01-17T14:30:00Z",
+        "details": "Scored 95/100"
+      },
+      {
+        "id": "act-002",
+        "type": "challenge_started",
+        "challengeId": "ch-002",
+        "challengeTitle": "Malware Signature Detection",
+        "timestamp": "2025-01-17T15:00:00Z"
+      },
+      {
+        "id": "act-003",
+        "type": "hint_used",
+        "challengeId": "ch-002",
+        "challengeTitle": "Malware Signature Detection",
+        "timestamp": "2025-01-17T15:15:00Z",
+        "details": "Hint 1 revealed"
+      },
+      {
+        "id": "act-004",
+        "type": "challenge_completed",
+        "challengeId": "ch-004",
+        "challengeTitle": "Social Engineering Assessment",
+        "timestamp": "2025-01-16T11:00:00Z",
+        "details": "Scored 88/100"
+      },
+      {
+        "id": "act-005",
+        "type": "achievement_earned",
+        "timestamp": "2025-01-16T11:05:00Z",
+        "details": "First Steps - Complete your first challenge"
+      }
+    ]
+  }
+}

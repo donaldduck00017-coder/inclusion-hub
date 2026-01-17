@@ -1,0 +1,35 @@
+[
+  {
+    "id": "user-001",
+    "email": "student@inclusionlab.io",
+    "password": "student123",
+    "name": "Alex Chen",
+    "role": "student",
+    "skillLevel": 2,
+    "avatar": null,
+    "createdAt": "2024-01-15T10:00:00Z",
+    "lastLoginAt": "2025-01-17T08:30:00Z"
+  },
+  {
+    "id": "user-002",
+    "email": "instructor@inclusionlab.io",
+    "password": "instructor123",
+    "name": "Dr. Sarah Mitchell",
+    "role": "instructor",
+    "skillLevel": 5,
+    "avatar": null,
+    "createdAt": "2023-09-01T09:00:00Z",
+    "lastLoginAt": "2025-01-17T09:00:00Z"
+  },
+  {
+    "id": "user-003",
+    "email": "admin@inclusionlab.io",
+    "password": "admin123",
+    "name": "Marcus Reynolds",
+    "role": "admin",
+    "skillLevel": 5,
+    "avatar": null,
+    "createdAt": "2023-06-01T08:00:00Z",
+    "lastLoginAt": "2025-01-17T07:45:00Z"
+  }
+]

@@ -1,0 +1,172 @@
+[
+  {
+    "id": "ch-001",
+    "title": "Phishing Email Analysis",
+    "description": "Analyze a suspicious email and identify the phishing indicators. Look for red flags in headers, links, and content.",
+    "category": "phishing",
+    "difficulty": "beginner",
+    "points": 100,
+    "estimatedTime": 15,
+    "prerequisites": [],
+    "status": "available",
+    "hints": [
+      "Check the sender's email domain carefully",
+      "Hover over links without clicking to see the actual URL",
+      "Look for urgency language and grammatical errors"
+    ],
+    "instructions": "You've received a suspicious email claiming to be from your bank. Analyze the email and identify all the phishing indicators present. Submit your findings in the format provided."
+  },
+  {
+    "id": "ch-002",
+    "title": "Malware Signature Detection",
+    "description": "Examine file hashes and behavior patterns to identify malware signatures in a sample dataset.",
+    "category": "malware",
+    "difficulty": "intermediate",
+    "points": 200,
+    "estimatedTime": 30,
+    "prerequisites": ["ch-001"],
+    "status": "available",
+    "hints": [
+      "Compare hashes against known malware databases",
+      "Look for suspicious process behaviors",
+      "Check for persistence mechanisms"
+    ],
+    "instructions": "You have been provided with a set of file samples. Analyze their characteristics and identify which ones contain malware signatures."
+  },
+  {
+    "id": "ch-003",
+    "title": "Network Traffic Analysis",
+    "description": "Analyze network packet captures to identify suspicious traffic patterns and potential data exfiltration.",
+    "category": "network",
+    "difficulty": "intermediate",
+    "points": 250,
+    "estimatedTime": 45,
+    "prerequisites": ["ch-001"],
+    "status": "available",
+    "hints": [
+      "Look for unusual outbound connections",
+      "Check for DNS tunneling patterns",
+      "Analyze packet timing and sizes"
+    ],
+    "instructions": "Review the provided PCAP file and identify any malicious network activity. Document the source, destination, and type of attack detected."
+  },
+  {
+    "id": "ch-004",
+    "title": "Social Engineering Assessment",
+    "description": "Evaluate a series of social engineering attempts and determine the attack vectors used.",
+    "category": "social-engineering",
+    "difficulty": "beginner",
+    "points": 150,
+    "estimatedTime": 20,
+    "prerequisites": [],
+    "status": "available",
+    "hints": [
+      "Identify pretexting scenarios",
+      "Look for urgency and authority manipulation",
+      "Check for information gathering attempts"
+    ],
+    "instructions": "You will be presented with several social engineering scenarios. Identify the techniques being used and explain how to defend against them."
+  },
+  {
+    "id": "ch-005",
+    "title": "Cryptography Challenge",
+    "description": "Decrypt an encoded message using various cryptographic analysis techniques.",
+    "category": "cryptography",
+    "difficulty": "advanced",
+    "points": 350,
+    "estimatedTime": 60,
+    "prerequisites": ["ch-002", "ch-003"],
+    "status": "locked",
+    "hints": [
+      "Try frequency analysis first",
+      "Consider common cipher types",
+      "Look for patterns in the ciphertext"
+    ],
+    "instructions": "An intercepted message needs to be decrypted. Use your knowledge of cryptographic techniques to reveal the hidden content."
+  },
+  {
+    "id": "ch-006",
+    "title": "Web Application Security",
+    "description": "Identify and exploit common web vulnerabilities in a sandboxed environment.",
+    "category": "web-security",
+    "difficulty": "advanced",
+    "points": 400,
+    "estimatedTime": 75,
+    "prerequisites": ["ch-003"],
+    "status": "locked",
+    "hints": [
+      "Check for SQL injection points",
+      "Test for XSS vulnerabilities",
+      "Look for authentication bypasses"
+    ],
+    "instructions": "A test web application has multiple security vulnerabilities. Identify and document at least three different vulnerability types."
+  },
+  {
+    "id": "ch-007",
+    "title": "Digital Forensics Investigation",
+    "description": "Conduct a forensic analysis of a compromised system to determine the attack timeline.",
+    "category": "forensics",
+    "difficulty": "expert",
+    "points": 500,
+    "estimatedTime": 90,
+    "prerequisites": ["ch-002", "ch-005"],
+    "status": "locked",
+    "hints": [
+      "Start with the event logs",
+      "Check for modified timestamps",
+      "Look for artifacts in temporary directories"
+    ],
+    "instructions": "A system has been compromised. Perform a complete forensic analysis and create a detailed incident timeline."
+  },
+  {
+    "id": "ch-008",
+    "title": "Spear Phishing Campaign",
+    "description": "Analyze a sophisticated spear phishing campaign targeting a specific organization.",
+    "category": "phishing",
+    "difficulty": "intermediate",
+    "points": 225,
+    "estimatedTime": 35,
+    "prerequisites": ["ch-001", "ch-004"],
+    "status": "available",
+    "hints": [
+      "Research the target organization",
+      "Identify personalization elements",
+      "Trace the attack infrastructure"
+    ],
+    "instructions": "A series of targeted emails have been sent to employees. Analyze the campaign and identify the threat actor's objectives."
+  },
+  {
+    "id": "ch-009",
+    "title": "Ransomware Response",
+    "description": "Respond to an active ransomware incident and implement containment measures.",
+    "category": "malware",
+    "difficulty": "expert",
+    "points": 550,
+    "estimatedTime": 120,
+    "prerequisites": ["ch-002", "ch-007"],
+    "status": "locked",
+    "hints": [
+      "Isolate affected systems immediately",
+      "Identify the ransomware family",
+      "Check for available decryption tools"
+    ],
+    "instructions": "An organization is under active ransomware attack. Lead the incident response and document your containment and recovery strategy."
+  },
+  {
+    "id": "ch-010",
+    "title": "Network Intrusion Detection",
+    "description": "Configure and tune intrusion detection rules for a simulated network environment.",
+    "category": "network",
+    "difficulty": "advanced",
+    "points": 375,
+    "estimatedTime": 50,
+    "prerequisites": ["ch-003"],
+    "status": "locked",
+    "hints": [
+      "Start with baseline traffic analysis",
+      "Create rules for known attack patterns",
+      "Minimize false positives"
+    ],
+    "instructions": "Set up detection rules for a network segment and successfully identify the simulated attacks while minimizing false alerts."
+  }
+]
