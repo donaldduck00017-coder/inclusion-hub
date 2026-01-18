@@ -1,0 +1,53 @@
+{
+  "switches": [
+    {
+      "id": "disableTelemetry",
+      "name": "Disable Telemetry",
+      "description": "Disable all telemetry tracking and event collection",
+      "enabled": false,
+      "category": "feature"
+    },
+    {
+      "id": "disableAiTutor",
+      "name": "Disable AI Tutor",
+      "description": "Disable AI tutor service for all users",
+      "enabled": false,
+      "category": "feature"
+    },
+    {
+      "id": "disableAuditMode",
+      "name": "Disable Audit Mode",
+      "description": "Disable session recording and replay features",
+      "enabled": false,
+      "category": "feature"
+    },
+    {
+      "id": "readOnlyMode",
+      "name": "Read Only Mode",
+      "description": "Disable all write operations (view only)",
+      "enabled": false,
+      "category": "emergency"
+    },
+    {
+      "id": "emergencyShutdown",
+      "name": "Emergency Shutdown",
+      "description": "Disable all features except health monitoring",
+      "enabled": false,
+      "category": "emergency"
+    },
+    {
+      "id": "maintenanceMode",
+      "name": "Maintenance Mode",
+      "description": "Show maintenance banner and limit features",
+      "enabled": false,
+      "category": "operational"
+    },
+    {
+      "id": "enhancedPrivacy",
+      "name": "Enhanced Privacy",
+      "description": "Enable maximum data minimization",
+      "enabled": false,
+      "category": "privacy"
+    }
+  ]
+}

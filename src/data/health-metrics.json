@@ -1,0 +1,84 @@
+{
+  "status": "healthy",
+  "timestamp": 1737158400000,
+  "services": [
+    {
+      "name": "Authentication",
+      "status": "up",
+      "latency": 45,
+      "uptime": 99.98,
+      "lastCheck": 1737158400000,
+      "errorRate": 0.02
+    },
+    {
+      "name": "Challenge Engine",
+      "status": "up",
+      "latency": 120,
+      "uptime": 99.95,
+      "lastCheck": 1737158400000,
+      "errorRate": 0.05
+    },
+    {
+      "name": "Detection Engine",
+      "status": "up",
+      "latency": 85,
+      "uptime": 99.99,
+      "lastCheck": 1737158400000,
+      "errorRate": 0.01
+    },
+    {
+      "name": "AI Tutor",
+      "status": "degraded",
+      "latency": 650,
+      "uptime": 98.5,
+      "lastCheck": 1737158400000,
+      "errorRate": 1.5
+    },
+    {
+      "name": "Telemetry Pipeline",
+      "status": "up",
+      "latency": 25,
+      "uptime": 99.99,
+      "lastCheck": 1737158400000,
+      "errorRate": 0.01
+    },
+    {
+      "name": "Database",
+      "status": "up",
+      "latency": 15,
+      "uptime": 99.999,
+      "lastCheck": 1737158400000,
+      "errorRate": 0.001
+    }
+  ],
+  "telemetry": {
+    "queueSize": 127,
+    "queueCapacity": 500,
+    "eventsProcessed24h": 15420,
+    "failedFlushes": 2,
+    "lastFlush": 1737158100000,
+    "dataMinimizationActive": false
+  },
+  "api": {
+    "version": "v2",
+    "latencyP50": 45,
+    "latencyP95": 180,
+    "latencyP99": 450,
+    "requestRate": 125,
+    "errorRate": 0.12,
+    "deprecationWarnings": []
+  },
+  "features": {
+    "activeFlags": {
+      "aiTutor": true,
+      "advancedChallenges": true,
+      "socDashboard": true,
+      "auditMode": true,
+      "telemetryExport": true,
+      "customChallenges": false,
+      "healthPanel": true
+    },
+    "killSwitches": [],
+    "flagOverrides": 0
+  }
+}
