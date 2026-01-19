@@ -1,4 +1,3 @@
-// Core entity types for Inclusion Lab
 
 export type UserRole = 'student' | 'instructor' | 'admin';
 
@@ -37,6 +36,12 @@ export type DifficultyLevel = 'beginner' | 'intermediate' | 'advanced' | 'expert
 
 export type ChallengeStatus = 'locked' | 'available' | 'in-progress' | 'completed';
 
+
+export type ValidationRule = 
+  | { type: 'exact'; answer: string }
+  | { type: 'keywords'; keywords: string[]; minMatch?: number }
+  | { type: 'regex'; pattern: string; flags?: string };
+
 export interface Challenge {
   id: string;
   title: string;
@@ -51,6 +56,7 @@ export interface Challenge {
   attempts?: number;
   hints: string[];
   instructions: string;
+  validation?: ValidationRule;
 }
 
 export interface ChallengeProgress {
@@ -61,7 +67,7 @@ export interface ChallengeProgress {
   completedAt?: string;
   attempts: number;
   hintsUsed: number;
-  timeSpent: number; // in seconds
+  timeSpent: number; 
   score?: number;
 }
 
@@ -118,7 +124,7 @@ export interface ActivityItem {
   details?: string;
 }
 
-// Telemetry types
+
 export type TelemetryEventType = 
   | 'session_start'
   | 'session_end'
@@ -151,7 +157,7 @@ export interface SessionRecording {
   minimizationApplied: boolean;
 }
 
-// Health & System types
+
 export type ServiceStatusType = 'up' | 'down' | 'degraded';
 export type HealthStatus = 'healthy' | 'degraded' | 'critical';
 
@@ -214,7 +220,7 @@ export interface DeprecationNotice {
   replacedBy: string;
 }
 
-// Feature Flags
+
 export interface FeatureFlags {
   aiTutor: boolean;
   advancedChallenges: boolean;

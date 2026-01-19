@@ -14,7 +14,12 @@
       "Hover over links without clicking to see the actual URL",
       "Look for urgency language and grammatical errors"
     ],
-    "instructions": "You've received a suspicious email claiming to be from your bank. Analyze the email and identify all the phishing indicators present. Submit your findings in the format provided."
+    "instructions": "You've received a suspicious email claiming to be from your bank. Analyze the email and identify all the phishing indicators present. Submit your findings in the format provided.",
+    "validation": {
+      "type": "keywords",
+      "keywords": ["spoofed", "domain", "urgent", "link", "mismatch", "grammar"],
+      "minMatch": 3
+    }
   },
   {
     "id": "ch-002",
@@ -31,7 +36,12 @@
       "Look for suspicious process behaviors",
       "Check for persistence mechanisms"
     ],
-    "instructions": "You have been provided with a set of file samples. Analyze their characteristics and identify which ones contain malware signatures."
+    "instructions": "You have been provided with a set of file samples. Analyze their characteristics and identify which ones contain malware signatures.",
+    "validation": {
+      "type": "keywords",
+      "keywords": ["md5", "hash", "signature", "trojan", "persistence", "registry"],
+      "minMatch": 3
+    }
   },
   {
     "id": "ch-003",
@@ -48,7 +58,12 @@
       "Check for DNS tunneling patterns",
       "Analyze packet timing and sizes"
     ],
-    "instructions": "Review the provided PCAP file and identify any malicious network activity. Document the source, destination, and type of attack detected."
+    "instructions": "Review the provided PCAP file and identify any malicious network activity. Document the source, destination, and type of attack detected.",
+    "validation": {
+      "type": "keywords",
+      "keywords": ["exfiltration", "c2", "beacon", "tunnel", "dns", "port", "anomaly"],
+      "minMatch": 3
+    }
   },
   {
     "id": "ch-004",
@@ -65,7 +80,12 @@
       "Look for urgency and authority manipulation",
       "Check for information gathering attempts"
     ],
-    "instructions": "You will be presented with several social engineering scenarios. Identify the techniques being used and explain how to defend against them."
+    "instructions": "You will be presented with several social engineering scenarios. Identify the techniques being used and explain how to defend against them.",
+    "validation": {
+      "type": "keywords",
+      "keywords": ["pretext", "authority", "urgency", "trust", "manipulation", "impersonation"],
+      "minMatch": 3
+    }
   },
   {
     "id": "ch-005",
@@ -82,7 +102,11 @@
       "Consider common cipher types",
       "Look for patterns in the ciphertext"
     ],
-    "instructions": "An intercepted message needs to be decrypted. Use your knowledge of cryptographic techniques to reveal the hidden content."
+    "instructions": "An intercepted message needs to be decrypted. Use your knowledge of cryptographic techniques to reveal the hidden content.",
+    "validation": {
+      "type": "exact",
+      "answer": "the quick brown fox jumps over the lazy dog"
+    }
   },
   {
     "id": "ch-006",
@@ -99,7 +123,12 @@
       "Test for XSS vulnerabilities",
       "Look for authentication bypasses"
     ],
-    "instructions": "A test web application has multiple security vulnerabilities. Identify and document at least three different vulnerability types."
+    "instructions": "A test web application has multiple security vulnerabilities. Identify and document at least three different vulnerability types.",
+    "validation": {
+      "type": "keywords",
+      "keywords": ["sqli", "sql injection", "xss", "cross-site", "csrf", "auth bypass", "injection"],
+      "minMatch": 3
+    }
   },
   {
     "id": "ch-007",
@@ -116,7 +145,12 @@
       "Check for modified timestamps",
       "Look for artifacts in temporary directories"
     ],
-    "instructions": "A system has been compromised. Perform a complete forensic analysis and create a detailed incident timeline."
+    "instructions": "A system has been compromised. Perform a complete forensic analysis and create a detailed incident timeline.",
+    "validation": {
+      "type": "keywords",
+      "keywords": ["timeline", "artifact", "log", "timestamp", "lateral", "persistence", "ioc"],
+      "minMatch": 4
+    }
   },
   {
     "id": "ch-008",
@@ -133,7 +167,12 @@
       "Identify personalization elements",
       "Trace the attack infrastructure"
     ],
-    "instructions": "A series of targeted emails have been sent to employees. Analyze the campaign and identify the threat actor's objectives."
+    "instructions": "A series of targeted emails have been sent to employees. Analyze the campaign and identify the threat actor's objectives.",
+    "validation": {
+      "type": "keywords",
+      "keywords": ["targeted", "reconnaissance", "persona", "payload", "infrastructure", "apt"],
+      "minMatch": 3
+    }
   },
   {
     "id": "ch-009",
@@ -150,7 +189,12 @@
       "Identify the ransomware family",
       "Check for available decryption tools"
     ],
-    "instructions": "An organization is under active ransomware attack. Lead the incident response and document your containment and recovery strategy."
+    "instructions": "An organization is under active ransomware attack. Lead the incident response and document your containment and recovery strategy.",
+    "validation": {
+      "type": "keywords",
+      "keywords": ["isolate", "contain", "backup", "decrypt", "ioc", "recovery", "family"],
+      "minMatch": 4
+    }
   },
   {
     "id": "ch-010",
@@ -167,6 +211,11 @@
       "Create rules for known attack patterns",
       "Minimize false positives"
     ],
-    "instructions": "Set up detection rules for a network segment and successfully identify the simulated attacks while minimizing false alerts."
+    "instructions": "Set up detection rules for a network segment and successfully identify the simulated attacks while minimizing false alerts.",
+    "validation": {
+      "type": "keywords",
+      "keywords": ["rule", "signature", "baseline", "alert", "threshold", "snort", "suricata"],
+      "minMatch": 3
+    }
   }
 ]

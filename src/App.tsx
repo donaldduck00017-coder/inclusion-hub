@@ -7,6 +7,7 @@ import { ProtectedRoute } from "@/components/shared";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import Challenges from "./pages/Challenges";
+import ChallengeWorkspace from "./pages/ChallengeWorkspace";
 import Progress from "./pages/Progress";
 import { ComingSoon } from "./pages/ComingSoon";
 import NotFound from "./pages/NotFound";
@@ -55,6 +56,14 @@ const App = () => (
             element={
               <ProtectedRoute>
                 <Challenges />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/challenges/:id" 
+            element={
+              <ProtectedRoute>
+                <ChallengeWorkspace />
               </ProtectedRoute>
             } 
           />

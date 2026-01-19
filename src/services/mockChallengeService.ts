@@ -1,6 +1,7 @@
 import { config } from '@/lib/config';
 import challengesData from '@/data/challenges.json';
 import type { Challenge, ChallengeCategory, DifficultyLevel, SubmissionResult } from '@/types';
+import { validateAnswer, getValidationFeedback } from './validator';
 
 const challenges = challengesData as Challenge[];
 
@@ -45,6 +46,12 @@ export const mockChallengeService = {
     return challenges.find(c => c.id === id) || null;
   },
   
+  /**
+   * Submit answer with deterministic validation
+   * 
+   * Validation happens in the service layer (never UI).
+   * This preserves: Frontend = control plane, Backend = decision plane
+   */
   async submitAnswer(
     challengeId: string,
     answer: string | string[],
@@ -52,19 +59,33 @@ export const mockChallengeService = {
   ): Promise<SubmissionResult> {
     await delay(config.mockDelay * 2);
     
-    // Mock correct answers - in real implementation, this would be validated server-side
-    const isCorrect = Math.random() > 0.3; // 70% success rate for demo
-    
     const challenge = challenges.find(c => c.id === challengeId);
+    
+    if (!challenge) {
+      return {
+        success: false,
+        correct: false,
+        feedback: 'Challenge not found',
+        pointsEarned: 0,
+        hintsAvailable: 0,
+      };
+    }
+
+    // Normalize array answers to string
+    const answerStr = Array.isArray(answer) ? answer.join(' ') : answer;
+    
+    // Run deterministic validation
+    const result = validateAnswer(challenge, answerStr);
+    
+    // Generate category-appropriate feedback
+    const feedback = getValidationFeedback(result, challenge);
     
     return {
       success: true,
-      correct: isCorrect,
-      feedback: isCorrect
-        ? 'Excellent work! Your analysis is correct.'
-        : 'Not quite right. Review your analysis and try again.',
-      pointsEarned: isCorrect ? challenge?.points : 0,
-      hintsAvailable: 3,
+      correct: result.correct,
+      feedback,
+      pointsEarned: result.correct ? challenge.points : 0,
+      hintsAvailable: challenge.hints.length,
     };
   },
   

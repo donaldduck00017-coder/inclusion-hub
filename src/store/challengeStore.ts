@@ -15,7 +15,7 @@ interface ChallengeState {
   isLoading: boolean;
   error: string | null;
   
-  // Actions
+ 
   setChallenges: (challenges: Challenge[]) => void;
   setActiveChallenge: (challenge: Challenge | null) => void;
   setFilters: (filters: Partial<ChallengeFilters>) => void;
@@ -69,22 +69,22 @@ export const useChallengeStore = create<ChallengeState>((set, get) => ({
     const { challenges, filters } = get();
     
     return challenges.filter((challenge) => {
-      // Category filter
+      
       if (filters.category !== 'all' && challenge.category !== filters.category) {
         return false;
       }
       
-      // Difficulty filter
+      
       if (filters.difficulty !== 'all' && challenge.difficulty !== filters.difficulty) {
         return false;
       }
       
-      // Status filter
+      
       if (filters.status !== 'all' && challenge.status !== filters.status) {
         return false;
       }
       
-      // Search filter
+      
       if (filters.search) {
         const searchLower = filters.search.toLowerCase();
         return (
