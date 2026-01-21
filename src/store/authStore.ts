@@ -9,7 +9,7 @@ interface AuthState {
   isLoading: boolean;
   error: string | null;
   
-  // Actions
+  
   login: (user: User, token: string) => void;
   logout: () => void;
   setLoading: (loading: boolean) => void;
