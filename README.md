@@ -37,7 +37,7 @@ My long-term goal is to develop the mindset and technical depth required for **s
 
 ---
 
-## Real-World Intent & Future Scope
+## Real-World Intent & Future Scope:
 
 Inclusion Lab V3 is designed to evolve into a **cyber range-style training and analysis platform** that mirrors how organizations train:
 
@@ -148,5 +148,7 @@ MIT License
 This project is not a single application — it is a **platform design exercise** focused on building systems that can be **observed, audited, and defended**.
 
 It reflects my goal of becoming an engineer who doesn’t just write features, but designs **security-aware platforms** that mirror how real-world security teams operate, learn, and improve their defenses.
+
+
 
 
