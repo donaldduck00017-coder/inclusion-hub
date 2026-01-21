@@ -3,16 +3,16 @@ import type { FeatureFlags, KillSwitch, User } from '@/types';
 import { config } from '@/lib/config';
 
 interface FeatureState {
-  // Computed flags
+  
   flags: FeatureFlags;
   
-  // Kill switches
+
   killSwitches: Map<string, KillSwitch>;
   
-  // Loading state
+
   isLoading: boolean;
   
-  // Actions
+ 
   computeFlags: (user: User | null) => void;
   setKillSwitch: (id: string, enabled: boolean, reason?: string) => void;
   loadKillSwitches: (switches: KillSwitch[]) => void;
@@ -36,9 +36,9 @@ export const useFeatureStore = create<FeatureState>((set, get) => ({
   killSwitches: new Map(),
   isLoading: false,
 
-  // Compute feature flags based on user and config
+  
   computeFlags: (user) => {
-    // Emergency shutdown - minimal features
+    
     if (config.killSwitches.emergencyShutdown) {
       set({
         flags: {
@@ -54,7 +54,7 @@ export const useFeatureStore = create<FeatureState>((set, get) => ({
       return;
     }
 
-    // Read-only mode - view-only features
+    
     if (config.killSwitches.readOnlyMode) {
       set({
         flags: {
@@ -70,13 +70,13 @@ export const useFeatureStore = create<FeatureState>((set, get) => ({
       return;
     }
 
-    // No user - minimal features
+   
     if (!user) {
       set({ flags: defaultFlags });
       return;
     }
 
-    // Normal feature computation
+    
     set({
       flags: {
         aiTutor: config.features.aiTutor && !config.killSwitches.disableAiTutor,
@@ -90,7 +90,7 @@ export const useFeatureStore = create<FeatureState>((set, get) => ({
     });
   },
 
-  // Set a kill switch state
+ 
   setKillSwitch: (id, enabled, reason) => {
     const state = get();
     const existing = state.killSwitches.get(id);
@@ -109,25 +109,25 @@ export const useFeatureStore = create<FeatureState>((set, get) => ({
     set({ killSwitches: newSwitches });
   },
 
-  // Load kill switches from service
+  
   loadKillSwitches: (switches) => {
     const newMap = new Map<string, KillSwitch>();
     switches.forEach((s) => newMap.set(s.id, s));
     set({ killSwitches: newMap });
   },
 
-  // Check if a specific feature is enabled
+  
   isFeatureEnabled: (feature) => {
     return get().flags[feature];
   },
 
-  // Check if a kill switch is active
+
   isKillSwitchActive: (id) => {
     const killSwitch = get().killSwitches.get(id);
     return killSwitch?.enabled || false;
   },
 
-  // Reset store
+ 
   reset: () => {
     set({
       flags: defaultFlags,

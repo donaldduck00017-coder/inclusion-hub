@@ -1,13 +1,6 @@
 import { useEffect, useRef, useCallback } from 'react';
 import { useTelemetryStore } from '@/store/telemetryStore';
 
-/**
- * Session lifecycle hook for challenge tracking
- * Tracks session start/end and provides methods for telemetry events
- * 
- * Privacy: Only logs session IDs, event types, timestamps, and metadata lengths
- * Never logs: emails, usernames, raw answers, or IPs
- */
 export const useChallengeSession = (challengeId: string, userId: string) => {
   const sessionIdRef = useRef<string | null>(null);
   const startTimeRef = useRef<number>(0);

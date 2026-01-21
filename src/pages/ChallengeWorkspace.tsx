@@ -9,14 +9,7 @@ import type { Challenge } from '@/types';
 import { Button } from '@/components/ui/button';
 import { Loader2, AlertTriangle, ArrowLeft } from 'lucide-react';
 
-/**
- * Challenge Workspace Page
- * 
- * Entry point for tracked challenge sessions:
- * - Loads challenge data
- * - Initializes session lifecycle
- * - Wires telemetry events
- */
+
 const ChallengeWorkspace = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();

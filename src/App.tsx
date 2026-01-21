@@ -9,6 +9,7 @@ import Dashboard from "./pages/Dashboard";
 import Challenges from "./pages/Challenges";
 import ChallengeWorkspace from "./pages/ChallengeWorkspace";
 import Progress from "./pages/Progress";
+import SOCDashboard from "./pages/SOCDashboard";
 import { ComingSoon } from "./pages/ComingSoon";
 import NotFound from "./pages/NotFound";
 import { useAuthStore } from "./store/authStore";
@@ -79,7 +80,7 @@ const App = () => (
             path="/soc" 
             element={
               <ProtectedRoute allowedRoles={['instructor', 'admin']}>
-                <ComingSoon feature="SOC Dashboard" phase="Phase 6.5" description="Security Operations Center monitoring for instructors" />
+                <SOCDashboard />
               </ProtectedRoute>
             } 
           />

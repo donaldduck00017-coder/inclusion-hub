@@ -1,8 +1,8 @@
 import { config } from '@/lib/config';
 import challengesData from '@/data/challenges.json';
 import type { Challenge, ChallengeCategory, DifficultyLevel, SubmissionResult } from '@/types';
-import { validateAnswer } from "../services/validator";
-import { getValidationFeedback } from "../services/validator";
+import { validateAnswer, getValidationFeedback } from './validator';
+
 const challenges = challengesData as Challenge[];
 
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));

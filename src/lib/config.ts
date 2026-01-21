@@ -1,4 +1,3 @@
-// Environment configuration for the Inclusion Lab platform
 
 export const config = {
   isDevelopment: import.meta.env.DEV,
@@ -6,14 +5,12 @@ export const config = {
   apiBaseUrl: import.meta.env.VITE_API_BASE_URL || 'mock',
   mockDelay: 300,
 
-  // Feature toggles
   features: {
     telemetry: import.meta.env.VITE_ENABLE_TELEMETRY !== 'false',
     aiTutor: import.meta.env.VITE_ENABLE_AI_TUTOR !== 'false',
     auditMode: import.meta.env.VITE_ENABLE_AUDIT !== 'false',
   },
 
-  // Kill switches (override feature flags)
   killSwitches: {
     disableTelemetry: false,
     disableAiTutor: false,
@@ -21,7 +18,6 @@ export const config = {
     emergencyShutdown: false,
   },
 
-  // Privacy modes
   dataMinimization: {
     enabled: import.meta.env.VITE_DATA_MINIMIZATION === 'true',
     aggregateOnly: true,
@@ -29,7 +25,6 @@ export const config = {
     anonymizeHints: true,
   },
 
-  // Telemetry
   telemetry: {
     endpoint: '/telemetry/events',
     batchSize: 50,
