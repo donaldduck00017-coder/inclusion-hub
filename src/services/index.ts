@@ -5,6 +5,7 @@ import { mockTelemetryService } from './mockTelemetryService';
 import { mockHealthService } from './mockHealthService';
 import { mockAdminService } from './mockAdminService';
 import { mockRoleService } from './mockRoleService';
+import { mockAuditService } from './mockAuditService';
 import { config } from '@/lib/config';
 import { ApiVersion, API_VERSIONS, getDeprecationNotice } from './api-contract';
 
@@ -143,6 +144,17 @@ class ServiceFactory {
   }
 
   /**
+   * Audit Service
+   * Handles: session replay, forensic analysis (read-only)
+   */
+  getAuditService() {
+    if (this.isMockMode()) {
+      return mockAuditService;
+    }
+    return mockAuditService;
+  }
+
+  /**
    * Get all services as an object
    */
   getAllServices() {
@@ -154,6 +166,7 @@ class ServiceFactory {
       health: this.getHealthService(),
       admin: this.getAdminService(),
       role: this.getRoleService(),
+      audit: this.getAuditService(),
     };
   }
 }
@@ -169,6 +182,7 @@ export const telemetryService = serviceFactory.getTelemetryService();
 export const healthService = serviceFactory.getHealthService();
 export const adminService = serviceFactory.getAdminService();
 export const roleService = serviceFactory.getRoleService();
+export const auditService = serviceFactory.getAuditService();
 
 // Export service types for consumers
 export type { MockAuthService } from './mockAuthService';
@@ -178,3 +192,4 @@ export type { MockTelemetryService } from './mockTelemetryService';
 export type { MockHealthService } from './mockHealthService';
 export type { MockAdminService } from './mockAdminService';
 export type { MockRoleService } from './mockRoleService';
+export type { MockAuditService } from './mockAuditService';

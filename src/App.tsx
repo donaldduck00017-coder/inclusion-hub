@@ -10,6 +10,7 @@ import Challenges from "./pages/Challenges";
 import ChallengeWorkspace from "./pages/ChallengeWorkspace";
 import Progress from "./pages/Progress";
 import SOCDashboard from "./pages/SOCDashboard";
+import AuditMode from "./pages/AuditMode";
 import { ComingSoon } from "./pages/ComingSoon";
 import NotFound from "./pages/NotFound";
 import { useAuthStore } from "./store/authStore";
@@ -87,8 +88,16 @@ const App = () => (
           <Route 
             path="/audit" 
             element={
-              <ProtectedRoute allowedRoles={['admin']}>
-                <ComingSoon feature="Audit Mode" phase="Phase 6.5" description="Session replay and student activity analysis" />
+              <ProtectedRoute allowedRoles={['admin', 'instructor']}>
+                <AuditMode />
+              </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/audit/:sessionId" 
+            element={
+              <ProtectedRoute allowedRoles={['admin', 'instructor']}>
+                <AuditMode />
               </ProtectedRoute>
             } 
           />
