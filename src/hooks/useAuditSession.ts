@@ -17,65 +17,97 @@ interface UseAuditSessionOptions {
 }
 
 export function useAuditSession({ sessionId, autoPlay = false }: UseAuditSessionOptions) {
-  const store = useAuditStore();
-  const telemetry = useTelemetryStore();
+  // Get individual store actions to avoid dependency issues
+  const setLoading = useAuditStore((state) => state.setLoading);
+  const setError = useAuditStore((state) => state.setError);
+  const setEvents = useAuditStore((state) => state.setEvents);
+  const setDetections = useAuditStore((state) => state.setDetections);
+  const setSnapshots = useAuditStore((state) => state.setSnapshots);
+  const setSession = useAuditStore((state) => state.setSession);
+  const storePlay = useAuditStore((state) => state.play);
+  const storePause = useAuditStore((state) => state.pause);
+  const storeReset = useAuditStore((state) => state.reset);
+  const storeJumpToDetection = useAuditStore((state) => state.jumpToDetection);
+  const storeJumpToTime = useAuditStore((state) => state.jumpToTime);
+  const storeSetPlaybackSpeed = useAuditStore((state) => state.setPlaybackSpeed);
+  const storeClearSession = useAuditStore((state) => state.clearSession);
+  const storeSetPlaybackTime = useAuditStore((state) => state.setPlaybackTime);
+  
+  // State selectors
+  const session = useAuditStore((state) => state.session);
+  const events = useAuditStore((state) => state.events);
+  const detections = useAuditStore((state) => state.detections);
+  const snapshots = useAuditStore((state) => state.snapshots);
+  const activeSnapshot = useAuditStore((state) => state.activeSnapshot);
+  const playbackTime = useAuditStore((state) => state.playbackTime);
+  const playbackSpeed = useAuditStore((state) => state.playbackSpeed);
+  const isPlaying = useAuditStore((state) => state.isPlaying);
+  const loading = useAuditStore((state) => state.loading);
+  const error = useAuditStore((state) => state.error);
+  const sessionDuration = useAuditStore((state) => state.sessionDuration);
+  const totalAttempts = useAuditStore((state) => state.totalAttempts);
+  const hintsUsed = useAuditStore((state) => state.hintsUsed);
+  const detectionCount = useAuditStore((state) => state.detectionCount);
+  const highestSeverity = useAuditStore((state) => state.highestSeverity);
+  
+  const addTelemetryEvent = useTelemetryStore((state) => state.addEvent);
   const playbackRef = useRef<number | null>(null);
   const lastTickRef = useRef<number>(0);
   
   // Load session data
   const loadSession = useCallback(async () => {
-    store.setLoading(true);
-    store.setError(null);
+    setLoading(true);
+    setError(null);
     
     try {
       // Fetch all data in parallel for efficiency
-      const [events, detections, snapshots] = await Promise.allSettled([
+      const [eventsResult, detectionsResult, snapshotsResult] = await Promise.allSettled([
         auditService.getEvents(sessionId),
         auditService.getDetections(sessionId),
         auditService.getSnapshots(sessionId),
       ]);
       
       // Handle partial failures gracefully
-      if (events.status === 'fulfilled') {
-        store.setEvents(events.value);
+      if (eventsResult.status === 'fulfilled') {
+        setEvents(eventsResult.value);
       }
       
-      if (detections.status === 'fulfilled') {
-        store.setDetections(detections.value);
+      if (detectionsResult.status === 'fulfilled') {
+        setDetections(detectionsResult.value);
       }
       
-      if (snapshots.status === 'fulfilled') {
-        store.setSnapshots(snapshots.value);
+      if (snapshotsResult.status === 'fulfilled') {
+        setSnapshots(snapshotsResult.value);
         
         // Calculate session from snapshots
-        if (snapshots.value.length > 0) {
-          const startTime = snapshots.value[0].timestamp;
-          const endTime = snapshots.value[snapshots.value.length - 1].timestamp;
+        if (snapshotsResult.value.length > 0) {
+          const startTime = snapshotsResult.value[0].timestamp;
+          const endTime = snapshotsResult.value[snapshotsResult.value.length - 1].timestamp;
           
-          store.setSession({
+          setSession({
             sessionId,
             userId: 'unknown',
-            challengeId: snapshots.value[0].route.split('/').pop() || 'unknown',
+            challengeId: snapshotsResult.value[0].route.split('/').pop() || 'unknown',
             startTime,
             endTime,
-            events: events.status === 'fulfilled' ? events.value : [],
-            detections: detections.status === 'fulfilled' ? detections.value : [],
-            snapshots: snapshots.value,
+            events: eventsResult.status === 'fulfilled' ? eventsResult.value : [],
+            detections: detectionsResult.status === 'fulfilled' ? detectionsResult.value : [],
+            snapshots: snapshotsResult.value,
           });
         }
       }
       
       // Check if all failed
       if (
-        events.status === 'rejected' && 
-        detections.status === 'rejected' && 
-        snapshots.status === 'rejected'
+        eventsResult.status === 'rejected' && 
+        detectionsResult.status === 'rejected' && 
+        snapshotsResult.status === 'rejected'
       ) {
         throw new Error('Failed to load session data');
       }
       
       // Track audit opened
-      telemetry.addEvent({
+      addTelemetryEvent({
         type: 'navigation',
         userId: 'audit-viewer',
         metadata: { 
@@ -84,21 +116,21 @@ export function useAuditSession({ sessionId, autoPlay = false }: UseAuditSession
         },
       });
       
-      store.setLoading(false);
+      setLoading(false);
       
       if (autoPlay) {
-        store.play();
+        storePlay();
       }
-    } catch (error) {
+    } catch (err) {
       // Sanitize error message - don't expose internal details
-      store.setError('Unable to load session data. Please try again.');
-      console.error('[Audit] Load error:', error);
+      setError('Unable to load session data. Please try again.');
+      console.error('[Audit] Load error:', err);
     }
-  }, [sessionId, autoPlay, store, telemetry]);
+  }, [sessionId, autoPlay, setLoading, setError, setEvents, setDetections, setSnapshots, setSession, addTelemetryEvent, storePlay]);
   
   // Playback engine
   useEffect(() => {
-    if (!store.isPlaying || !store.session) {
+    if (!isPlaying || !session) {
       if (playbackRef.current) {
         cancelAnimationFrame(playbackRef.current);
         playbackRef.current = null;
@@ -114,16 +146,20 @@ export function useAuditSession({ sessionId, autoPlay = false }: UseAuditSession
       const delta = timestamp - lastTickRef.current;
       lastTickRef.current = timestamp;
       
-      // Apply playback speed
-      const newTime = store.playbackTime + (delta * store.playbackSpeed);
+      // Apply playback speed - use refs to get current values
+      const currentPlaybackTime = useAuditStore.getState().playbackTime;
+      const currentPlaybackSpeed = useAuditStore.getState().playbackSpeed;
+      const currentSessionDuration = useAuditStore.getState().sessionDuration;
+      
+      const newTime = currentPlaybackTime + (delta * currentPlaybackSpeed);
       
       // Check if we've reached the end
-      if (newTime >= store.sessionDuration) {
-        store.setPlaybackTime(store.sessionDuration);
-        store.pause();
+      if (newTime >= currentSessionDuration) {
+        storeSetPlaybackTime(currentSessionDuration);
+        storePause();
         
         // Track audit completion
-        telemetry.addEvent({
+        addTelemetryEvent({
           type: 'navigation',
           userId: 'audit-viewer',
           metadata: { action: 'audit_complete', sessionId },
@@ -131,7 +167,7 @@ export function useAuditSession({ sessionId, autoPlay = false }: UseAuditSession
         return;
       }
       
-      store.setPlaybackTime(newTime);
+      storeSetPlaybackTime(newTime);
       playbackRef.current = requestAnimationFrame(tick);
     };
     
@@ -143,7 +179,7 @@ export function useAuditSession({ sessionId, autoPlay = false }: UseAuditSession
         cancelAnimationFrame(playbackRef.current);
       }
     };
-  }, [store.isPlaying, store.session, store.playbackSpeed, sessionId, telemetry]);
+  }, [isPlaying, session, sessionId, storeSetPlaybackTime, storePause, addTelemetryEvent]);
   
   // Load on mount
   useEffect(() => {
@@ -151,37 +187,37 @@ export function useAuditSession({ sessionId, autoPlay = false }: UseAuditSession
     
     return () => {
       // Track exit
-      telemetry.addEvent({
+      addTelemetryEvent({
         type: 'navigation',
         userId: 'audit-viewer',
         metadata: { action: 'audit_exit', sessionId },
       });
-      store.clearSession();
+      storeClearSession();
     };
-  }, [sessionId, loadSession, telemetry, store]);
+  }, [sessionId]); // eslint-disable-line react-hooks/exhaustive-deps
   
   // Playback controls with telemetry
   const play = useCallback(() => {
-    store.play();
-    telemetry.addEvent({
+    storePlay();
+    addTelemetryEvent({
       type: 'navigation',
       userId: 'audit-viewer',
       metadata: { action: 'audit_play', sessionId },
     });
-  }, [store, telemetry, sessionId]);
+  }, [storePlay, addTelemetryEvent, sessionId]);
   
   const pause = useCallback(() => {
-    store.pause();
-    telemetry.addEvent({
+    storePause();
+    addTelemetryEvent({
       type: 'navigation',
       userId: 'audit-viewer',
       metadata: { action: 'audit_pause', sessionId },
     });
-  }, [store, telemetry, sessionId]);
+  }, [storePause, addTelemetryEvent, sessionId]);
   
   const jumpToDetection = useCallback((detection: AuditDetection) => {
-    store.jumpToDetection(detection);
-    telemetry.addEvent({
+    storeJumpToDetection(detection);
+    addTelemetryEvent({
       type: 'navigation',
       userId: 'audit-viewer',
       metadata: { 
@@ -191,43 +227,43 @@ export function useAuditSession({ sessionId, autoPlay = false }: UseAuditSession
         ruleId: detection.ruleId,
       },
     });
-  }, [store, telemetry, sessionId]);
+  }, [storeJumpToDetection, addTelemetryEvent, sessionId]);
   
   const setSpeed = useCallback((speed: 1 | 2 | 4) => {
-    store.setPlaybackSpeed(speed);
-    telemetry.addEvent({
+    storeSetPlaybackSpeed(speed);
+    addTelemetryEvent({
       type: 'navigation',
       userId: 'audit-viewer',
       metadata: { action: 'audit_speed_change', sessionId, speed },
     });
-  }, [store, telemetry, sessionId]);
+  }, [storeSetPlaybackSpeed, addTelemetryEvent, sessionId]);
   
   return {
     // State
-    session: store.session,
-    events: store.events,
-    detections: store.detections,
-    snapshots: store.snapshots,
-    activeSnapshot: store.activeSnapshot,
-    playbackTime: store.playbackTime,
-    playbackSpeed: store.playbackSpeed,
-    isPlaying: store.isPlaying,
-    loading: store.loading,
-    error: store.error,
+    session,
+    events,
+    detections,
+    snapshots,
+    activeSnapshot,
+    playbackTime,
+    playbackSpeed,
+    isPlaying,
+    loading,
+    error,
     
     // Metrics
-    sessionDuration: store.sessionDuration,
-    totalAttempts: store.totalAttempts,
-    hintsUsed: store.hintsUsed,
-    detectionCount: store.detectionCount,
-    highestSeverity: store.highestSeverity,
+    sessionDuration,
+    totalAttempts,
+    hintsUsed,
+    detectionCount,
+    highestSeverity,
     
     // Actions
     play,
     pause,
-    reset: store.reset,
+    reset: storeReset,
     jumpToDetection,
-    jumpToTime: store.jumpToTime,
+    jumpToTime: storeJumpToTime,
     setSpeed,
     reload: loadSession,
   };
