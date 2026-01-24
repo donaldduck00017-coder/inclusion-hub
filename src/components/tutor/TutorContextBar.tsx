@@ -1,9 +1,9 @@
 import { Clock, Target, Lightbulb, AlertTriangle } from "lucide-react";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import type { TutorTelemetry } from "@/hooks/useTutor";
+import type { TutorTelemetrySummary, DetectionSeverity } from "@/types/tutor";
 
 interface TutorContextBarProps {
-  telemetry: TutorTelemetry;
+  telemetry: TutorTelemetrySummary;
 }
 
 function formatTime(seconds: number): string {
@@ -12,7 +12,7 @@ function formatTime(seconds: number): string {
   return `${mins}:${secs.toString().padStart(2, "0")}`;
 }
 
-function getSeverityColor(severity: "LOW" | "MEDIUM" | "HIGH"): string {
+function getSeverityColor(severity: DetectionSeverity): string {
   switch (severity) {
     case "LOW":
       return "text-primary bg-primary/10 border-primary/30";
@@ -20,18 +20,21 @@ function getSeverityColor(severity: "LOW" | "MEDIUM" | "HIGH"): string {
       return "text-warning bg-warning/10 border-warning/30";
     case "HIGH":
       return "text-destructive bg-destructive/10 border-destructive/30";
+    case "CRITICAL":
+      return "text-destructive bg-destructive/20 border-destructive/50";
     default:
       return "text-muted-foreground bg-muted/10 border-muted/30";
   }
 }
 
-function getSeverityGlow(severity: "LOW" | "MEDIUM" | "HIGH"): string {
+function getSeverityGlow(severity: DetectionSeverity): string {
   switch (severity) {
     case "LOW":
       return "0 0 6px hsl(var(--primary) / 0.4)";
     case "MEDIUM":
       return "0 0 6px hsl(var(--warning) / 0.4)";
     case "HIGH":
+    case "CRITICAL":
       return "0 0 6px hsl(var(--destructive) / 0.4)";
     default:
       return "none";
@@ -63,7 +66,7 @@ export function TutorContextBar({ telemetry }: TutorContextBarProps) {
           <Tooltip>
             <TooltipTrigger asChild>
               <div className="flex items-center gap-1.5 text-xs">
-                <Target className="w-3.5 h-3.5 text-cyber-blue" style={{ color: "hsl(217 91% 60%)" }} />
+                <Target className="w-3.5 h-3.5 text-primary" />
                 <span className="font-mono text-foreground">{telemetry.attempts}</span>
               </div>
             </TooltipTrigger>
@@ -91,7 +94,7 @@ export function TutorContextBar({ telemetry }: TutorContextBarProps) {
         {/* Detection Signals */}
         <div className="flex items-center gap-2">
           {telemetry.detectionSignals.length > 0 ? (
-            telemetry.detectionSignals.map((signal, index) => (
+            telemetry.detectionSignals.slice(0, 3).map((signal, index) => (
               <Tooltip key={index}>
                 <TooltipTrigger asChild>
                   <div
