@@ -2,6 +2,7 @@ import { useEffect, useState, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { StudentLayout } from '@/components/shared/StudentLayout';
 import { WorkspaceShell } from '@/components/student/workspace';
+import { TutorPanel } from '@/components/tutor';
 import { useChallengeSession } from '@/hooks/useChallengeSession';
 import { mockChallengeService } from '@/services/mockChallengeService';
 import { useAuthStore } from '@/store/authStore';
@@ -134,6 +135,7 @@ const ChallengeWorkspace = () => {
         onSubmit={handleSubmit}
         onHintReveal={handleHintReveal}
       />
+      <TutorPanel />
     </StudentLayout>
   );
 };

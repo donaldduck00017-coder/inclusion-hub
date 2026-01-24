@@ -221,6 +221,11 @@
     text-wrap: balance;
   }
 
+  .writing-vertical {
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+  }
+
   /* Animation utilities */
   .animate-glow {
     animation: glow 2s ease-in-out infinite alternate;
