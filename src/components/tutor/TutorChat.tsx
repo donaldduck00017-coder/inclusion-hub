@@ -1,12 +1,11 @@
 import { useEffect, useRef } from "react";
-import { Bot, Loader2 } from "lucide-react";
+import { Bot, Loader2, User } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { TutorMessage } from "./TutorMessage";
-import type { TutorMessage as TutorMessageType } from "@/types/tutor";
+import type { TutorMessage } from "@/types/tutor";
 
 interface TutorChatProps {
-  messages: TutorMessageType[];
+  messages: TutorMessage[];
   isLoading: boolean;
 }
 
