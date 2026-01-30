@@ -66,6 +66,7 @@ export function TutorPanel() {
         suggestions={suggestedQuestions}
         onSelect={handleSuggestedPrompt}
         isLoading={isLoading}
+        mode={mode}
       />
 
       <TutorInput 

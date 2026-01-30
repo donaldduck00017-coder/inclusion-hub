@@ -11,7 +11,7 @@ import ChallengeWorkspace from "./pages/ChallengeWorkspace";
 import Progress from "./pages/Progress";
 import SOCDashboard from "./pages/SOCDashboard";
 import AuditMode from "./pages/AuditMode";
-import { ComingSoon } from "./pages/ComingSoon";
+import SystemHealth from "./pages/SystemHealth";
 import NotFound from "./pages/NotFound";
 import { useAuthStore } from "./store/authStore";
 
@@ -105,7 +105,7 @@ const App = () => (
             path="/health" 
             element={
               <ProtectedRoute allowedRoles={['admin']}>
-                <ComingSoon feature="System Health" phase="Phase 6.6" description="Health monitoring and kill switch controls" />
+                <SystemHealth />
               </ProtectedRoute>
             } 
           />

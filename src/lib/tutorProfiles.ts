@@ -392,24 +392,178 @@ export function getDetectionReaction(signalType: string): DetectionReaction | un
   return detectionReactions.find(r => r.signalType === signalType);
 }
 
-export function getSuggestedQuestions(category: ChallengeCategory, mode: TutorMode): string[] {
-  const profile = tutorProfiles[category];
-  const modeQuestions: Record<TutorMode, string[]> = {
+// =====================================================
+// MODE-SPECIFIC QUESTIONS PER CATEGORY
+// =====================================================
+
+export interface CategoryModeQuestions {
+  learning: string[];
+  defensive: string[];
+  soc: string[];
+}
+
+export const categoryModeQuestions: Record<ChallengeCategory, CategoryModeQuestions> = {
+  phishing: {
     learning: [
-      "Explain the key concepts I need to understand",
-      "What should I learn from this challenge?",
+      "What email headers reveal the true sender?",
+      "How do SPF, DKIM, and DMARC work together?",
+      "What are the signs of a lookalike domain?",
+      "Explain how credential harvesting works",
     ],
     defensive: [
-      "How would I defend against this attack?",
-      "What security controls would prevent this?",
+      "How do I configure email filtering rules?",
+      "What training helps users spot phishing?",
+      "How should I report phishing to my org?",
+      "What controls prevent credential theft?",
     ],
     soc: [
-      "How would a SOC analyst prioritize this?",
-      "What would the incident response look like?",
+      "How do I triage a reported phishing email?",
+      "What artifacts should I collect for IOCs?",
+      "How do I track a phishing campaign?",
+      "What's the escalation path for spear phishing?",
     ],
-  };
+  },
   
-  return [...profile.suggestedQuestions.slice(0, 2), ...modeQuestions[mode]];
+  malware: {
+    learning: [
+      "What's the difference between static and dynamic analysis?",
+      "How do I calculate and verify file hashes?",
+      "What persistence mechanisms are most common?",
+      "How does command and control (C2) work?",
+    ],
+    defensive: [
+      "How do I safely detonate malware in a sandbox?",
+      "What endpoint protections stop this malware type?",
+      "How do I write YARA rules for detection?",
+      "What's the containment strategy for ransomware?",
+    ],
+    soc: [
+      "How do I prioritize this malware alert?",
+      "What's the incident response for active malware?",
+      "How do I identify patient zero?",
+      "What forensic artifacts confirm infection?",
+    ],
+  },
+  
+  network: {
+    learning: [
+      "How do I read a packet capture in Wireshark?",
+      "What protocols are commonly abused by attackers?",
+      "How does DNS tunneling work?",
+      "What's the difference between IDS and IPS?",
+    ],
+    defensive: [
+      "How do I configure firewall rules for this threat?",
+      "What Snort/Suricata rules would detect this?",
+      "How do I segment the network to limit spread?",
+      "What's the best way to block C2 traffic?",
+    ],
+    soc: [
+      "How do I correlate network events with endpoints?",
+      "What's the timeline for this network intrusion?",
+      "How do I identify lateral movement patterns?",
+      "What evidence proves data exfiltration?",
+    ],
+  },
+  
+  cryptography: {
+    learning: [
+      "Is this encoding or encryption?",
+      "How do I perform frequency analysis?",
+      "What's the difference between symmetric and asymmetric?",
+      "How do I identify the cipher type?",
+    ],
+    defensive: [
+      "What makes encryption implementation secure?",
+      "How should keys be stored and rotated?",
+      "What cipher modes are vulnerable to attacks?",
+      "How do I detect weak cryptographic usage?",
+    ],
+    soc: [
+      "How do I analyze encrypted C2 channels?",
+      "What indicates crypto-mining activity?",
+      "How do I handle encrypted malware payloads?",
+      "What's the playbook for ransomware encryption?",
+    ],
+  },
+  
+  "web-security": {
+    learning: [
+      "How does SQL injection actually work?",
+      "What's the difference between reflected and stored XSS?",
+      "How do CSRF tokens protect against attacks?",
+      "What makes authentication vulnerable?",
+    ],
+    defensive: [
+      "How do I implement proper input validation?",
+      "What security headers should I configure?",
+      "How do I protect against session hijacking?",
+      "What's the secure way to handle file uploads?",
+    ],
+    soc: [
+      "How do I analyze WAF alerts for true positives?",
+      "What logs show SQL injection attempts?",
+      "How do I trace the source of a web attack?",
+      "What's the response for a data breach via web?",
+    ],
+  },
+  
+  forensics: {
+    learning: [
+      "Where do I start a forensic investigation?",
+      "What are the most valuable Windows artifacts?",
+      "How do I build an accurate timeline?",
+      "What's the chain of custody and why does it matter?",
+    ],
+    defensive: [
+      "How do I preserve evidence properly?",
+      "What logging should be enabled for forensics?",
+      "How do I prepare systems for incident response?",
+      "What tools should be in a forensics toolkit?",
+    ],
+    soc: [
+      "How do I prioritize forensic artifacts?",
+      "What's the handoff process from SOC to forensics?",
+      "How do I document findings for legal proceedings?",
+      "What memory artifacts indicate compromise?",
+    ],
+  },
+  
+  "social-engineering": {
+    learning: [
+      "What pretexting techniques are used here?",
+      "How does authority manipulation work?",
+      "What psychological triggers are being exploited?",
+      "How do I identify information gathering attempts?",
+    ],
+    defensive: [
+      "What policies prevent social engineering?",
+      "How do I train employees to verify requests?",
+      "What callback procedures should exist?",
+      "How do I protect against vishing attacks?",
+    ],
+    soc: [
+      "How do I investigate a social engineering report?",
+      "What's the response for a successful pretext?",
+      "How do I assess the damage from SE attacks?",
+      "What indicators show targeted SE campaigns?",
+    ],
+  },
+};
+
+export function getSuggestedQuestions(category: ChallengeCategory, mode: TutorMode): string[] {
+  const categoryQuestions = categoryModeQuestions[category];
+  
+  if (!categoryQuestions) {
+    // Fallback for unknown categories
+    return [
+      "What concepts should I understand here?",
+      "How would you approach this challenge?",
+      "What should I look for first?",
+    ];
+  }
+  
+  return categoryQuestions[mode] || categoryQuestions.learning;
 }
 
 export function isConceptAllowed(category: ChallengeCategory, concept: string): boolean {
