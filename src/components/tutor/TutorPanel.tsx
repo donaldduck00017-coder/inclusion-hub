@@ -4,7 +4,7 @@
  * Challenge-aware, detection-reactive SOC mentor interface.
  */
 
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import { MessageSquareText, ChevronRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
@@ -18,8 +18,23 @@ import { TutorModeToggle } from "./TutorModeToggle";
 import { TutorChat } from "./TutorChat";
 import { TutorInput } from "./TutorInput";
 import { TutorSuggestions } from "./TutorSuggestions";
+import type { Challenge } from "@/types";
+import type { ChallengeCategory, ChallengeDifficulty, TutorChallengeContext } from "@/types/tutor";
 
-export function TutorPanel() {
+interface TutorPanelProps {
+  challenge?: Challenge;
+}
+
+export function TutorPanel({ challenge: externalChallenge }: TutorPanelProps) {
+  // Map external challenge to tutor challenge context
+  const initialChallenge: TutorChallengeContext | undefined = externalChallenge ? {
+    challengeId: externalChallenge.id,
+    challengeName: externalChallenge.title,
+    category: externalChallenge.category as ChallengeCategory,
+    difficulty: externalChallenge.difficulty as ChallengeDifficulty,
+    instructions: externalChallenge.instructions || externalChallenge.description,
+  } : undefined;
+
   const {
     messages,
     sendMessage,
@@ -31,9 +46,23 @@ export function TutorPanel() {
     toggleOpen,
     isLoading,
     suggestedQuestions,
-  } = useTutorSession();
+    setChallenge,
+  } = useTutorSession(initialChallenge ? { initialChallenge } : undefined);
 
   const isMobile = useIsMobile();
+
+  // Update challenge when external challenge changes
+  useEffect(() => {
+    if (externalChallenge && externalChallenge.id !== challenge.challengeId) {
+      setChallenge({
+        challengeId: externalChallenge.id,
+        challengeName: externalChallenge.title,
+        category: externalChallenge.category as ChallengeCategory,
+        difficulty: externalChallenge.difficulty as ChallengeDifficulty,
+        instructions: externalChallenge.instructions || externalChallenge.description,
+      });
+    }
+  }, [externalChallenge, challenge.challengeId, setChallenge]);
 
   const handleSuggestedPrompt = useCallback(
     (prompt: string) => {

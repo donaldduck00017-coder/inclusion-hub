@@ -135,7 +135,7 @@ const ChallengeWorkspace = () => {
         onSubmit={handleSubmit}
         onHintReveal={handleHintReveal}
       />
-      <TutorPanel />
+      <TutorPanel challenge={challenge} />
     </StudentLayout>
   );
 };
