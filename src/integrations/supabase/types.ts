@@ -14,16 +14,315 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      auth_events: {
+        Row: {
+          created_at: string
+          event_type: string
+          failure_reason: string | null
+          id: string
+          ip_address: unknown
+          metadata: Json | null
+          session_id: string | null
+          subject_id: string | null
+          subject_type: Database["public"]["Enums"]["subject_type"] | null
+          success: boolean
+          user_agent: string | null
+        }
+        Insert: {
+          created_at?: string
+          event_type: string
+          failure_reason?: string | null
+          id?: string
+          ip_address?: unknown
+          metadata?: Json | null
+          session_id?: string | null
+          subject_id?: string | null
+          subject_type?: Database["public"]["Enums"]["subject_type"] | null
+          success: boolean
+          user_agent?: string | null
+        }
+        Update: {
+          created_at?: string
+          event_type?: string
+          failure_reason?: string | null
+          id?: string
+          ip_address?: unknown
+          metadata?: Json | null
+          session_id?: string | null
+          subject_id?: string | null
+          subject_type?: Database["public"]["Enums"]["subject_type"] | null
+          success?: boolean
+          user_agent?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "auth_events_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      refresh_tokens: {
+        Row: {
+          created_at: string
+          expires_at: string
+          id: string
+          session_id: string
+          token_hash: string
+          used: boolean
+          used_at: string | null
+        }
+        Insert: {
+          created_at?: string
+          expires_at: string
+          id?: string
+          session_id: string
+          token_hash: string
+          used?: boolean
+          used_at?: string | null
+        }
+        Update: {
+          created_at?: string
+          expires_at?: string
+          id?: string
+          session_id?: string
+          token_hash?: string
+          used?: boolean
+          used_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "refresh_tokens_session_id_fkey"
+            columns: ["session_id"]
+            isOneToOne: false
+            referencedRelation: "sessions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      services: {
+        Row: {
+          created_at: string
+          description: string | null
+          enabled: boolean
+          id: string
+          name: string
+          scopes: string[]
+          secret_hash: string
+          trust_level: number
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          enabled?: boolean
+          id?: string
+          name: string
+          scopes?: string[]
+          secret_hash: string
+          trust_level?: number
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          enabled?: boolean
+          id?: string
+          name?: string
+          scopes?: string[]
+          secret_hash?: string
+          trust_level?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      sessions: {
+        Row: {
+          created_at: string
+          expires_at: string
+          id: string
+          ip_address: unknown
+          revoked: boolean
+          revoked_at: string | null
+          revoked_reason: string | null
+          subject_id: string
+          subject_type: Database["public"]["Enums"]["subject_type"]
+          token_hash: string | null
+          user_agent: string | null
+        }
+        Insert: {
+          created_at?: string
+          expires_at: string
+          id?: string
+          ip_address?: unknown
+          revoked?: boolean
+          revoked_at?: string | null
+          revoked_reason?: string | null
+          subject_id: string
+          subject_type: Database["public"]["Enums"]["subject_type"]
+          token_hash?: string | null
+          user_agent?: string | null
+        }
+        Update: {
+          created_at?: string
+          expires_at?: string
+          id?: string
+          ip_address?: unknown
+          revoked?: boolean
+          revoked_at?: string | null
+          revoked_reason?: string | null
+          subject_id?: string
+          subject_type?: Database["public"]["Enums"]["subject_type"]
+          token_hash?: string | null
+          user_agent?: string | null
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          granted_at: string
+          granted_by: string | null
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          granted_at?: string
+          granted_by?: string | null
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          granted_at?: string
+          granted_by?: string | null
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_roles_granted_by_fkey"
+            columns: ["granted_by"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_roles_granted_by_fkey"
+            columns: ["granted_by"]
+            isOneToOne: false
+            referencedRelation: "users_public"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_roles_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_roles_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "users_public"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      users: {
+        Row: {
+          avatar: string | null
+          created_at: string
+          email: string
+          email_verified: boolean
+          id: string
+          name: string
+          password_hash: string
+          skill_level: number
+          updated_at: string
+        }
+        Insert: {
+          avatar?: string | null
+          created_at?: string
+          email: string
+          email_verified?: boolean
+          id?: string
+          name: string
+          password_hash: string
+          skill_level?: number
+          updated_at?: string
+        }
+        Update: {
+          avatar?: string | null
+          created_at?: string
+          email?: string
+          email_verified?: boolean
+          id?: string
+          name?: string
+          password_hash?: string
+          skill_level?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
-      [_ in never]: never
+      users_public: {
+        Row: {
+          avatar: string | null
+          created_at: string | null
+          email: string | null
+          email_verified: boolean | null
+          id: string | null
+          name: string | null
+          skill_level: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          avatar?: string | null
+          created_at?: string | null
+          email?: string | null
+          email_verified?: boolean | null
+          id?: string | null
+          name?: string | null
+          skill_level?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          avatar?: string | null
+          created_at?: string | null
+          email?: string | null
+          email_verified?: boolean | null
+          id?: string | null
+          name?: string | null
+          skill_level?: number | null
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
     }
     Functions: {
-      [_ in never]: never
+      cleanup_expired_sessions: { Args: never; Returns: number }
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
+      is_admin: { Args: never; Returns: boolean }
+      revoke_all_user_sessions: {
+        Args: { _reason?: string; _user_id: string }
+        Returns: number
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "student" | "instructor" | "soc" | "admin"
+      subject_type: "user" | "service"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +449,9 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["student", "instructor", "soc", "admin"],
+      subject_type: ["user", "service"],
+    },
   },
 } as const
